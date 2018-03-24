@@ -1,0 +1,67 @@
+buildscript {
+    
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+    }
+}
+
+allprojects {
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+    group = GROUP
+    version = VERSION_NAME
+
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion '4.5'
+    distributionType 'all'
+}
+
+def releaseToMaven() {
+    return project.hasProperty('release')
+}
+
+ext {
+
+    MIN_SDK = 16
+    TARGET_SDK = 27
+    BUILD_TOOLS = '27.0.3'
+
+    final def supportVersion = '27.1.0'
+    SUPPORT_ANNOTATIONS = "com.android.support:support-annotations:$supportVersion"
+    SUPPORT_FRAGMENT = "com.android.support:support-fragment:$supportVersion"
+    SUPPORT_APPCOMPAT = "com.android.support:appcompat-v7:$supportVersion"
+
+    final def lifecycleVersion = '1.1.1'
+    LIFECYCLE_EXTENSIONS = "android.arch.lifecycle:extensions:$lifecycleVersion"
+    LIFECYCLE_JAVA8 = "android.arch.lifecycle:common-java8:$lifecycleVersion"
+
+    LISTENERS = 'ru.noties:listeners:1.0.1'
+    DEBUG = 'ru.noties:debug:3.0.0@jar'
+
+    final def leakCanaryVersion = '1.5.4'
+    LEAK_CANARY_DEBUG = "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    LEAK_CANARY_RELEASE = "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+
+    TEST_JUNIT = 'junit:junit:4.12'
+    TEST_ROBOLECTRIC = 'org.robolectric:robolectric:3.8'
+    TEST_MOCKITO = 'org.mockito:mockito-core:2.16.0'
+
+    releaseToMaven = this.&releaseToMaven
+}

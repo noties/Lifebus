@@ -1,0 +1,17 @@
+apply plugin: 'java-library'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+dependencies {
+
+    api SUPPORT_ANNOTATIONS
+    api LISTENERS
+
+    testImplementation TEST_JUNIT
+    testImplementation TEST_MOCKITO
+}
+
+if (releaseToMaven()) {
+    apply from: 'https://raw.githubusercontent.com/noties/gradle-mvn-push/master/gradle-mvn-push-jar.gradle'
+}
