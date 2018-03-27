@@ -38,7 +38,7 @@ The idea behind this: most lifecycle events have their counterparts. `onCreate/o
 ## Arch
 
 ```gradle
-implementation 'ru.noties:lifebus-arch:1.0.0'
+implementation 'ru.noties:lifebus-arch:1.0.1'
 ```
 
 **NB** this artifact relies on `android.arch.lifecycle:common-java8:1.1.1` in order to receive all lifecycle events without using annotation processor. I have tested it on a project with `JavaVersion.VERSION_1_7` and it compiled and worked. But I cannot guarantee that this will be true with the future releases of architecture components.
@@ -58,7 +58,7 @@ lifebus.on(Lifecycle.Event.ON_DESTROY, () -> {});
 ## Extended set of events
 
 ```gradle
-implementation 'ru.noties:lifebus:1.0.0'
+implementation 'ru.noties:lifebus:1.0.1'
 ```
 
 Activity via (`ActivityEvent`):
@@ -96,7 +96,7 @@ Please note that after ActivityLifebus receives a `DESTROY` event it will automa
 ## Subscription
 
 ```gradle
-implementation 'ru.noties:subscription:1.0.0'
+implementation 'ru.noties:subscription:1.0.1'
 ```
 
 Represents an abstraction for the _subscribe_/_release_ functionality. Contains 2 implementations: `Subscription` and `CompositeSubscription`. Internally used by `lifebus`.
@@ -117,13 +117,12 @@ public void onStart() {
 ```
 
 ```java
-private final CompositeSubscription compositeSubscription = CompositeSubscription.create()
-        .accept(subscription -> lifebus.on(FragmentEvent.STOP, subscription::unsubscribe));
-    
-
 @Override
 public void onStart() {
     super.onStart();
+
+    final CompositeSubscription compositeSubscription = CompositeSubscription.create()
+            .accept(subscription -> lifebus.on(ActivityEvent.STOP, subscription::unsubscribe));
 
     doIt(result -> Log.i("DID_IT", "Result: " + result))
             .accept(compositeSubscription.add());

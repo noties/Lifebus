@@ -30,6 +30,9 @@ class CompositeSubscriptionImpl extends CompositeSubscription {
 
     @NonNull
     public Visitor add() {
+        if (!isActive()) {
+            throw new IllegalStateException("This CompositeSubscription has been already unsubscribed");
+        }
         return visitor;
     }
 

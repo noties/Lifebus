@@ -33,10 +33,11 @@ public abstract class CompositeSubscription extends Subscription {
      *
      * @return {@link ru.noties.subscription.Subscription.Visitor} to add a {@link Subscription}
      * to this {@link CompositeSubscription}
+     * @throws IllegalStateException if this subscription has been unsubscribed already
      * @see #remove(Subscription)
      */
     @NonNull
-    public abstract Visitor add();
+    public abstract Visitor add() throws IllegalStateException;
 
     /**
      * @param subscription {@link Subscription} to remove from this {@link CompositeSubscription}
