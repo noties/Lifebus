@@ -96,7 +96,7 @@ private final Lifebus<FragmentEvent> lifebus =
 ```
 
 ```java
-private fin Lifebus<ViewEvent> lifebus = ViewLifebus.create(view);
+private final Lifebus<ViewEvent> lifebus = ViewLifebus.create(view);
 ```
 
 Please note that after ActivityLifebus receives a `DESTROY` event it will automatically unsubscribe any listeners (after dispatching a notification). The same for the FragmentLifebus and ViewLifebus with `DETACH` event.
