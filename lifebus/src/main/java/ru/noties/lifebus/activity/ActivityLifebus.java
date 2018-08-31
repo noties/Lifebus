@@ -8,6 +8,8 @@ import ru.noties.lifebus.Lifebus;
 
 /**
  * Factory to create a {@link Lifebus} instance that listens for {@link ActivityEvent}
+ * <p>
+ * since 1.0.2 extends Lifebus&lt;ActivityEvent&gt;
  *
  * @see ru.noties.lifebus.fragment.FragmentLifebus
  * @see Lifebus
@@ -15,7 +17,7 @@ import ru.noties.lifebus.Lifebus;
  * @see #create(Activity)
  * @see #create(Application, Activity)
  */
-public abstract class ActivityLifebus {
+public abstract class ActivityLifebus extends Lifebus<ActivityEvent> {
 
     /**
      * Factory method to obtain a {@link Lifebus} that listens for {@link ActivityEvent}. Please note
@@ -30,7 +32,7 @@ public abstract class ActivityLifebus {
      */
     @NonNull
     public static Lifebus<ActivityEvent> create(@NonNull Activity activity) {
-        return Lifebus.create(ActivityLifebusSource.create(activity));
+        return new Impl(Lifebus.create(ActivityLifebusSource.create(activity)));
     }
 
     /**
@@ -44,9 +46,22 @@ public abstract class ActivityLifebus {
      */
     @NonNull
     public static Lifebus<ActivityEvent> create(@NonNull Application application, @NonNull Activity activity) {
-        return Lifebus.create(ActivityLifebusSource.create(application, activity));
+        return new Impl(Lifebus.create(ActivityLifebusSource.create(application, activity)));
     }
 
-    private ActivityLifebus() {
+    static class Impl extends ActivityLifebus {
+
+        private final Lifebus<ActivityEvent> lifebus;
+
+        Impl(@NonNull Lifebus<ActivityEvent> lifebus) {
+            this.lifebus = lifebus;
+        }
+
+        @NonNull
+        @Override
+        public Lifebus<ActivityEvent> on(@NonNull ActivityEvent event, @NonNull Action action) {
+            lifebus.on(event, action);
+            return this;
+        }
     }
 }
