@@ -4,7 +4,7 @@ Utility to trigger action on Android lifecycle events. Contains implementation b
 
 [![lifebus-arch](https://img.shields.io/maven-central/v/ru.noties/lifebus-arch.svg?label=lifebus-arch)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22lifebus-arch%22)
 [![lifebus](https://img.shields.io/maven-central/v/ru.noties/lifebus.svg?label=lifebus)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22lifebus%22)
-[![lifebus-arch](https://img.shields.io/maven-central/v/ru.noties/subscription.svg?label=subscription)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22subscription%22)
+[![subscription](https://img.shields.io/maven-central/v/ru.noties/subscription.svg?label=subscription)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22subscription%22)
 
 ---
 
