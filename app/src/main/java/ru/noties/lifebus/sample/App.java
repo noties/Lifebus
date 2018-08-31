@@ -13,10 +13,10 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        if (!LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
+//        if (!LeakCanary.isInAnalyzerProcess(this)) {
+//            return;
+//        }
+//        LeakCanary.install(this);
 
         Debug.init(new AndroidLogDebugOutput(BuildConfig.DEBUG));
     }
