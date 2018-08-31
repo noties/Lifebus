@@ -1,6 +1,6 @@
 # Lifebus
 
-Utility to trigger action on Android lifecycle events. Contains implementation based on [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) and own implementation with extended set of events for Activity and Fragment.
+Utility to trigger action on Android lifecycle events. Contains implementation based on [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) and own implementation with extended set of events for Activity, Fragment and View.
 
 [![lifebus-arch](https://img.shields.io/maven-central/v/ru.noties/lifebus-arch.svg?label=lifebus-arch)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22lifebus-arch%22)
 [![lifebus](https://img.shields.io/maven-central/v/ru.noties/lifebus.svg?label=lifebus)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22lifebus%22)
@@ -38,7 +38,7 @@ The idea behind this: most lifecycle events have their counterparts. `onCreate/o
 ## Arch
 
 ```gradle
-implementation 'ru.noties:lifebus-arch:1.0.1'
+implementation 'ru.noties:lifebus-arch:1.0.2'
 ```
 
 **NB** this artifact relies on `android.arch.lifecycle:common-java8:1.1.1` in order to receive all lifecycle events without using annotation processor. I have tested it on a project with `JavaVersion.VERSION_1_7` and it compiled and worked. But I cannot guarantee that this will be true with the future releases of architecture components.
@@ -58,7 +58,7 @@ lifebus.on(Lifecycle.Event.ON_DESTROY, () -> {});
 ## Extended set of events
 
 ```gradle
-implementation 'ru.noties:lifebus:1.0.1'
+implementation 'ru.noties:lifebus:1.0.2'
 ```
 
 Activity via (`ActivityEvent`):
@@ -81,6 +81,10 @@ Fragment via (`FragmentEvent`):
 * DESTROY
 * DETACH
 
+View via (`ViewEvent`):
+* ATTACH
+* DETACH
+
 ```java
 private final Lifebus<ActivityEvent> lifebus = 
         ActivityLifebus.create(application, activity);
@@ -91,12 +95,16 @@ private final Lifebus<FragmentEvent> lifebus =
         FragmentLifebus.create(fragmentManager, fragment);
 ```
 
-Please note that after ActivityLifebus receives a `DESTROY` event it will automatically unsubscribe any listeners (after dispatching a notification). The same for the FragmentLifebus with `DETACH` event.
+```java
+private final Lifebus<ViewEvent> lifebus = ViewLifebus.create(view);
+```
+
+Please note that after ActivityLifebus receives a `DESTROY` event it will automatically unsubscribe any listeners (after dispatching a notification). The same for the FragmentLifebus and ViewLifebus with `DETACH` event.
 
 ## Subscription
 
 ```gradle
-implementation 'ru.noties:subscription:1.0.1'
+implementation 'ru.noties:subscription:1.0.2'
 ```
 
 Represents an abstraction for the _subscribe_/_release_ functionality. Contains 2 implementations: `Subscription` and `CompositeSubscription`. Internally used by `lifebus`.
