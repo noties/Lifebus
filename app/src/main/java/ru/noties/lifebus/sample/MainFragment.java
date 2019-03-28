@@ -16,8 +16,6 @@ import ru.noties.debug.Debug;
 import ru.noties.lifebus.Lifebus;
 import ru.noties.lifebus.fragment.FragmentEvent;
 import ru.noties.lifebus.fragment.FragmentLifebus;
-import ru.noties.lifebus.view.ViewEvent;
-import ru.noties.lifebus.view.ViewLifebus;
 
 public class MainFragment extends Fragment {
 
@@ -60,20 +58,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        handler.postDelayed(() -> {
-
-            final TextView generated = new TextView(requireContext());
-            generated.setText("Generated!");
-
-            final ViewLifebus viewLifebus = ViewLifebus.create(generated);
-            viewLifebus.on(ViewEvent.ATTACH, () -> Debug.i("Generated view ATTACH"));
-            viewLifebus.on(ViewEvent.DETACH, () -> Debug.i("Generated view DETACH"));
-
-            ((ViewGroup) view).addView(generated);
-
-        }, 250L);
-
-        lifebus.on(FragmentEvent.DESTROY_VIEW, () -> {
+        lifebus.on(FragmentEvent.VIEW_DESTROYED, () -> {
             handler.removeCallbacksAndMessages(null);
             Debug.i("Removing handler updates");
         });

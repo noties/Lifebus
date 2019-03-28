@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         final Lifebus<FragmentEvent> fragmentLifebus = FragmentLifebus.create(fragmentManager, fragment);
-        fragmentLifebus.on(FragmentEvent.CREATE_VIEW, () -> Debug.i("Fragment, CREATE_VIEW"));
-        fragmentLifebus.on(FragmentEvent.DESTROY_VIEW, () -> Debug.i("Fragment, DESTROY_VIEW"));
+        fragmentLifebus.on(FragmentEvent.VIEW_CREATED, () -> Debug.i("Fragment, VIEW_CREATED"));
+        fragmentLifebus.on(FragmentEvent.VIEW_DESTROYED, () -> Debug.i("Fragment, VIEW_DESTROYED"));
         fragmentLifebus.on(FragmentEvent.DETACH, () -> Debug.i("Fragment, DETACH"));
     }
 

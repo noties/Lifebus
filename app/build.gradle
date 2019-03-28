@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion TARGET_SDK
-    buildToolsVersion BUILD_TOOLS
+    compileSdkVersion config['target-sdk']
+    buildToolsVersion config['build-tools']
 
     defaultConfig {
         applicationId "ru.noties.lifebus.sample"
-        minSdkVersion MIN_SDK
-        targetSdkVersion TARGET_SDK
+        minSdkVersion config['min-sdk']
+        targetSdkVersion config['target-sdk']
         versionCode 1
         versionName version
     }
@@ -23,9 +23,9 @@ dependencies {
 
     implementation project(':lifebus')
     implementation project(':lifebus-arch')
-    implementation SUPPORT_APPCOMPAT
-    implementation DEBUG
 
-    debugImplementation LEAK_CANARY_DEBUG
-    releaseImplementation LEAK_CANARY_RELEASE
+    deps.with {
+        implementation it['support-app-compat']
+        implementation it['debug']
+    }
 }

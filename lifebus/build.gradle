@@ -2,12 +2,12 @@ apply plugin: 'com.android.library'
 
 android {
 
-    compileSdkVersion TARGET_SDK
-    buildToolsVersion BUILD_TOOLS
+    compileSdkVersion config['target-sdk']
+    buildToolsVersion config['build-tools']
 
     defaultConfig {
-        minSdkVersion MIN_SDK
-        targetSdkVersion TARGET_SDK
+        minSdkVersion config['min-sdk']
+        targetSdkVersion config['target-sdk']
         versionCode 1
         versionName version
     }
@@ -15,16 +15,22 @@ android {
 
 dependencies {
 
-    api SUPPORT_ANNOTATIONS
-    api LISTENERS
-    api project(':subscription')
+    deps.with {
 
-    // do not add dependency, compile only
-    compileOnly SUPPORT_FRAGMENT
+        api it['support-annotations']
 
-    testImplementation TEST_JUNIT
-    testImplementation TEST_ROBOLECTRIC
-    testImplementation TEST_MOCKITO
+        // do not add dependency, compile only
+        compileOnly it['support-fragments']
+    }
+
+    testDeps.with {
+        testImplementation it['junit']
+        testImplementation it['mockito']
+        testImplementation it['robolectric']
+    }
+
+    // we must have fragments at classpath for tests
+    testImplementation deps['support-fragments']
 }
 
 if (releaseToMaven()) {

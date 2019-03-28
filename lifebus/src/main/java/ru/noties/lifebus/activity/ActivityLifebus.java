@@ -2,8 +2,10 @@ package ru.noties.lifebus.activity;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import ru.noties.lifebus.BaseLifebus;
 import ru.noties.lifebus.Lifebus;
 
 /**
@@ -13,11 +15,10 @@ import ru.noties.lifebus.Lifebus;
  *
  * @see ru.noties.lifebus.fragment.FragmentLifebus
  * @see Lifebus
- * @see ActivityLifebusSource
  * @see #create(Activity)
  * @see #create(Application, Activity)
  */
-public abstract class ActivityLifebus extends Lifebus<ActivityEvent> {
+public abstract class ActivityLifebus extends BaseLifebus<Activity, ActivityEvent> {
 
     /**
      * Factory method to obtain a {@link Lifebus} that listens for {@link ActivityEvent}. Please note
@@ -27,12 +28,17 @@ public abstract class ActivityLifebus extends Lifebus<ActivityEvent> {
      *
      * @param activity android.app.Activity to register on
      * @return an instance of {@link Lifebus}
-     * @see ActivityLifebusSource
      * @see #create(Application, Activity)
      */
     @NonNull
     public static Lifebus<ActivityEvent> create(@NonNull Activity activity) {
-        return new Impl(Lifebus.create(ActivityLifebusSource.create(activity)));
+        final Application application = activity.getApplication();
+        if (application == null) {
+            throw new IllegalStateException("Provided activity '" + activity.getClass().getName() + "' " +
+                    "has no Application information. Consider moving this call to after Activity#onCreate " +
+                    "or use #create(Application, Activity) factory method");
+        }
+        return new Impl(application, activity);
     }
 
     /**
@@ -41,27 +47,65 @@ public abstract class ActivityLifebus extends Lifebus<ActivityEvent> {
      * @param application android.app.Application
      * @param activity    android.app.Activity
      * @return an instance of {@link Lifebus}
-     * @see ActivityLifebusSource
      * @see #create(Activity)
      */
     @NonNull
     public static Lifebus<ActivityEvent> create(@NonNull Application application, @NonNull Activity activity) {
-        return new Impl(Lifebus.create(ActivityLifebusSource.create(application, activity)));
+        return new Impl(application, activity);
+    }
+
+
+    ActivityLifebus(@NonNull Activity owner, @NonNull Class<ActivityEvent> event, @NonNull ActivityEvent disposeEvent) {
+        super(owner, event, disposeEvent);
     }
 
     static class Impl extends ActivityLifebus {
 
-        private final Lifebus<ActivityEvent> lifebus;
+        Impl(@NonNull Application application, @NonNull Activity activity) {
+            super(activity, ActivityEvent.class, ActivityEvent.DESTROY);
 
-        Impl(@NonNull Lifebus<ActivityEvent> lifebus) {
-            this.lifebus = lifebus;
+            application.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacksImpl());
         }
 
-        @NonNull
-        @Override
-        public Lifebus<ActivityEvent> on(@NonNull ActivityEvent event, @NonNull Action action) {
-            lifebus.on(event, action);
-            return this;
+        private class ActivityLifecycleCallbacksImpl implements Application.ActivityLifecycleCallbacks {
+
+            @Override
+            public void onActivityCreated(Activity a, Bundle savedInstanceState) {
+                triggerEventNotification(a, ActivityEvent.CREATE);
+            }
+
+            @Override
+            public void onActivityStarted(Activity a) {
+                triggerEventNotification(a, ActivityEvent.START);
+            }
+
+            @Override
+            public void onActivityResumed(Activity a) {
+                triggerEventNotification(a, ActivityEvent.RESUME);
+            }
+
+            @Override
+            public void onActivityPaused(Activity a) {
+                triggerEventNotification(a, ActivityEvent.PAUSE);
+            }
+
+            @Override
+            public void onActivityStopped(Activity a) {
+                triggerEventNotification(a, ActivityEvent.STOP);
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity a, Bundle outState) {
+                triggerEventNotification(a, ActivityEvent.SAVE_INSTANCE_STATE);
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity a) {
+                if (triggerEventNotification(a, ActivityEvent.DESTROY)) {
+                    // unregister
+                    a.getApplication().unregisterActivityLifecycleCallbacks(this);
+                }
+            }
         }
     }
 }

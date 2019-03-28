@@ -1,9 +1,13 @@
 package ru.noties.lifebus.fragment;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.View;
 
+import ru.noties.lifebus.BaseLifebus;
 import ru.noties.lifebus.Lifebus;
 
 /**
@@ -14,10 +18,9 @@ import ru.noties.lifebus.Lifebus;
  * since 1.0.2 extends Lifebus&lt;FragmentEvent&gt;
  *
  * @see FragmentEvent
- * @see FragmentLifebusSource
  */
 @SuppressWarnings("WeakerAccess")
-public abstract class FragmentLifebus extends Lifebus<FragmentEvent> {
+public abstract class FragmentLifebus extends BaseLifebus<Fragment, FragmentEvent> {
 
     /**
      * Factory method to create an instance of {@link Lifebus} to listen to {@link FragmentEvent}.
@@ -27,41 +30,100 @@ public abstract class FragmentLifebus extends Lifebus<FragmentEvent> {
      *
      * @param fragment android.support.v4.app.Fragment to register on.
      * @return an instance of {@link Lifebus}
-     * @see FragmentLifebusSource
-     * @see FragmentLifebusSource#create(Fragment)
      * @see #create(FragmentManager, Fragment)
      */
     @NonNull
     public static Lifebus<FragmentEvent> create(@NonNull Fragment fragment) {
-        return new Impl(Lifebus.create(FragmentLifebusSource.create(fragment)));
+        final FragmentManager manager = fragment.getFragmentManager();
+        if (manager == null) {
+            throw new IllegalStateException("Provided fragment '" + fragment.getClass().getName() + "' " +
+                    "is not attached to a fragment manager. Consider using #create(FragmentManager, Fragment) " +
+                    "factory method or wait until fragment is attached");
+        }
+        return new Impl(manager, fragment);
     }
 
     /**
      * @param manager  android.support.v4.app.FragmentManager
      * @param fragment android.support.v4.app.Fragment
      * @return an instance of {@link Lifebus}
-     * @see FragmentLifebusSource
-     * @see FragmentLifebusSource#create(FragmentManager, Fragment)
      * @see #create(Fragment)
      */
     @NonNull
     public static Lifebus<FragmentEvent> create(@NonNull FragmentManager manager, @NonNull Fragment fragment) {
-        return new Impl(Lifebus.create(FragmentLifebusSource.create(manager, fragment)));
+        return new Impl(manager, fragment);
+    }
+
+    protected FragmentLifebus(@NonNull Fragment owner, @NonNull Class<FragmentEvent> event, @NonNull FragmentEvent disposeEvent) {
+        super(owner, event, disposeEvent);
     }
 
     static class Impl extends FragmentLifebus {
 
-        private final Lifebus<FragmentEvent> lifebus;
+        Impl(@NonNull FragmentManager manager, @NonNull Fragment fragment) {
+            super(fragment, FragmentEvent.class, FragmentEvent.DETACH);
 
-        Impl(@NonNull Lifebus<FragmentEvent> lifebus) {
-            this.lifebus = lifebus;
+            manager.registerFragmentLifecycleCallbacks(new FragmentLifecycleCallbacksImpl(), false);
         }
 
-        @NonNull
-        @Override
-        public Lifebus<FragmentEvent> on(@NonNull FragmentEvent event, @NonNull Action action) {
-            lifebus.on(event, action);
-            return this;
+        private class FragmentLifecycleCallbacksImpl extends FragmentManager.FragmentLifecycleCallbacks {
+
+            @Override
+            public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
+                triggerEventNotification(f, FragmentEvent.ATTACH);
+            }
+
+            @Override
+            public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
+                triggerEventNotification(f, FragmentEvent.CREATE);
+            }
+
+            @Override
+            public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
+                triggerEventNotification(f, FragmentEvent.VIEW_CREATED);
+            }
+
+            @Override
+            public void onFragmentStarted(FragmentManager fm, Fragment f) {
+                triggerEventNotification(f, FragmentEvent.START);
+            }
+
+            @Override
+            public void onFragmentResumed(FragmentManager fm, Fragment f) {
+                triggerEventNotification(f, FragmentEvent.RESUME);
+            }
+
+            @Override
+            public void onFragmentPaused(FragmentManager fm, Fragment f) {
+                triggerEventNotification(f, FragmentEvent.PAUSE);
+            }
+
+            @Override
+            public void onFragmentStopped(FragmentManager fm, Fragment f) {
+                triggerEventNotification(f, FragmentEvent.STOP);
+            }
+
+            @Override
+            public void onFragmentSaveInstanceState(FragmentManager fm, Fragment f, Bundle outState) {
+                triggerEventNotification(f, FragmentEvent.SAVE_INSTANCE_STATE);
+            }
+
+            @Override
+            public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
+                triggerEventNotification(f, FragmentEvent.VIEW_DESTROYED);
+            }
+
+            @Override
+            public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
+                triggerEventNotification(f, FragmentEvent.DESTROY);
+            }
+
+            @Override
+            public void onFragmentDetached(FragmentManager fm, Fragment f) {
+                if (triggerEventNotification(f, FragmentEvent.DETACH)) {
+                    fm.unregisterFragmentLifecycleCallbacks(this);
+                }
+            }
         }
     }
 }

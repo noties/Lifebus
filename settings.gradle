@@ -1,2 +1,2 @@
 rootProject.name = 'LifebusProject'
-include ':app', ':lifebus-arch', ':lifebus', ':subscription'
+include ':app', ':lifebus-arch', ':lifebus'
