@@ -1,5 +1,6 @@
 package ru.noties.lifebus.sample;
 
+import android.arch.lifecycle.Lifecycle;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,12 +11,20 @@ import ru.noties.debug.Debug;
 import ru.noties.lifebus.Lifebus;
 import ru.noties.lifebus.activity.ActivityEvent;
 import ru.noties.lifebus.activity.ActivityLifebus;
+import ru.noties.lifebus.arch.LifebusArch;
 import ru.noties.lifebus.fragment.FragmentEvent;
 import ru.noties.lifebus.fragment.FragmentLifebus;
 
 public class MainActivity extends AppCompatActivity {
 
     private Lifebus<ActivityEvent> lifebus;
+
+    {
+        final LifebusArch lifebusArch = LifebusArch.create(this);
+        for (Lifecycle.Event event : Lifecycle.Event.values()) {
+            lifebusArch.on(event, () -> Debug.i("activity arch, event: %s", event));
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

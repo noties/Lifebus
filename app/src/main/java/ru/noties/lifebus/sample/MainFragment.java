@@ -1,5 +1,6 @@
 package ru.noties.lifebus.sample;
 
+import android.arch.lifecycle.Lifecycle;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import java.util.Date;
 
 import ru.noties.debug.Debug;
 import ru.noties.lifebus.Lifebus;
+import ru.noties.lifebus.arch.LifebusArch;
 import ru.noties.lifebus.fragment.FragmentEvent;
 import ru.noties.lifebus.fragment.FragmentLifebus;
 
@@ -28,6 +30,13 @@ public class MainFragment extends Fragment {
     }
 
     private Lifebus<FragmentEvent> lifebus;
+
+    {
+        final LifebusArch lifebusArch = LifebusArch.create(this);
+        for (Lifecycle.Event event : Lifecycle.Event.values()) {
+            lifebusArch.on(event, () -> Debug.i("fragment arch, event: %s", event));
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
