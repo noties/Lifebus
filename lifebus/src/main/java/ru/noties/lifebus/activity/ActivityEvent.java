@@ -9,7 +9,7 @@ public enum ActivityEvent {
     STOP,
 
     /**
-     * @since 1.1.0-SNAPSHOT
+     * @since 1.1.0
      */
     SAVE_INSTANCE_STATE,
 

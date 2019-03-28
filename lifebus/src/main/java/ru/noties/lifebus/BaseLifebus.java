@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @since 1.1.0-SNAPSHOT
+ * @since 1.1.0
  */
 public abstract class BaseLifebus<T, E extends Enum<E>> extends Lifebus<E> {
 

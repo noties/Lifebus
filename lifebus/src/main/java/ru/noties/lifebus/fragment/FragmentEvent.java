@@ -6,7 +6,7 @@ public enum FragmentEvent {
     CREATE,
 
     /**
-     * @since 1.1.0-SNAPSHOT renamed from `CREATE_VIEW`
+     * @since 1.1.0 renamed from `CREATE_VIEW`
      */
     VIEW_CREATED,
 
@@ -16,12 +16,12 @@ public enum FragmentEvent {
     STOP,
 
     /**
-     * @since 1.1.0-SNAPSHOT
+     * @since 1.1.0
      */
     SAVE_INSTANCE_STATE,
 
     /**
-     * @since 1.1.0-SNAPSHOT renamed from `DESTROY_VIEW`
+     * @since 1.1.0 renamed from `DESTROY_VIEW`
      */
     VIEW_DESTROYED,
 
