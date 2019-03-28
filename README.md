@@ -2,9 +2,8 @@
 
 Utility to trigger action on Android lifecycle events. Contains implementation based on [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) and own implementation with extended set of events for Activity, Fragment and View.
 
-[![lifebus-arch](https://img.shields.io/maven-central/v/ru.noties/lifebus-arch.svg?label=lifebus-arch)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22lifebus-arch%22)
 [![lifebus](https://img.shields.io/maven-central/v/ru.noties/lifebus.svg?label=lifebus)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22lifebus%22)
-[![subscription](https://img.shields.io/maven-central/v/ru.noties/subscription.svg?label=subscription)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22subscription%22)
+[![lifebus-arch](https://img.shields.io/maven-central/v/ru.noties/lifebus-arch.svg?label=lifebus-arch)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22lifebus-arch%22)
 
 ---
 
@@ -28,7 +27,7 @@ public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceStat
 
     final MilkyWayBinding binding = MilkyWayBinding.bind(this, view);
 
-    lifebus.on(FragmentEvent.DESTROY_VIEW, binding::release);
+    lifebus.on(FragmentEvent.VIEW_DESTROYED, binding::release);
 }
 ```
 
@@ -37,8 +36,8 @@ The idea behind this: most lifecycle events have their counterparts. `onCreate/o
 
 ## Arch
 
-```gradle
-implementation 'ru.noties:lifebus-arch:1.0.2'
+```groovy
+implementation "ru.noties:lifebus-arch:${latest}"
 ```
 
 **NB** this artifact relies on `android.arch.lifecycle:common-java8:1.1.1` in order to receive all lifecycle events without using annotation processor. I have tested it on a project with `JavaVersion.VERSION_1_7` and it compiled and worked. But I cannot guarantee that this will be true with the future releases of architecture components.
@@ -48,8 +47,6 @@ implementation 'ru.noties:lifebus-arch:1.0.2'
 private final LifebusArch lifebus = LifebusArch.create(this);
 ``` 
 
-All events from `Lifecycle.Event` are available to be notified about except the `ON_ANY` which will throw `IllegalStateException`.
-
 ```java
 lifebus.on(Lifecycle.Event.ON_DESTROY, () -> {});
 ```
@@ -57,8 +54,8 @@ lifebus.on(Lifecycle.Event.ON_DESTROY, () -> {});
 
 ## Extended set of events
 
-```gradle
-implementation 'ru.noties:lifebus:1.0.2'
+```groovy
+implementation "ru.noties:lifebus:${latest}"
 ```
 
 Activity via (`ActivityEvent`):
@@ -67,22 +64,20 @@ Activity via (`ActivityEvent`):
 * RESUME
 * PAUSE
 * STOP
+* SAVE_INSTANCE_STATE (new in `1.1.0`)
 * DESTROY
 
 Fragment via (`FragmentEvent`):
 * ATTACH
 * CREATE
-* CREATE_VIEW
+* VIEW_CREATED
 * START
 * RESUME
 * PAUSE
 * STOP
-* DESTROY_VIEW
+* SAVE_INSTANCE_STATE (new in `1.1.0`)
+* VIEW_DESTROYED
 * DESTROY
-* DETACH
-
-View via (`ViewEvent`):
-* ATTACH
 * DETACH
 
 ```java
@@ -95,47 +90,8 @@ private final Lifebus<FragmentEvent> lifebus =
         FragmentLifebus.create(fragmentManager, fragment);
 ```
 
-```java
-private final Lifebus<ViewEvent> lifebus = ViewLifebus.create(view);
-```
-
 Please note that after ActivityLifebus receives a `DESTROY` event it will automatically unsubscribe any listeners (after dispatching a notification). The same for the FragmentLifebus and ViewLifebus with `DETACH` event.
 
-## Subscription
-
-```gradle
-implementation 'ru.noties:subscription:1.0.2'
-```
-
-Represents an abstraction for the _subscribe_/_release_ functionality. Contains 2 implementations: `Subscription` and `CompositeSubscription`. Internally used by `lifebus`.
-
-```java
-@NonNull
-private Subscription doIt(@NonNull Action action) {
-    // do it
-}
-
-@Override
-public void onStart() {
-    super.onStart();
-
-    doIt(result -> Log.i("DID_IT", "Result: " + result))
-            .accept(subscription -> lifebus.on(FragmentEvent.STOP, subscription::unsubscribe));
-}
-```
-
-```java
-@Override
-public void onStart() {
-    super.onStart();
-
-    final CompositeSubscription compositeSubscription = CompositeSubscription.create()
-            .accept(subscription -> lifebus.on(ActivityEvent.STOP, subscription::unsubscribe));
-
-    doIt(result -> Log.i("DID_IT", "Result: " + result))
-            .accept(compositeSubscription.add());
-}
-```
 
 ## License
 
