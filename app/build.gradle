@@ -6,7 +6,7 @@ android {
     buildToolsVersion config['build-tools']
 
     defaultConfig {
-        applicationId "ru.noties.lifebus.sample"
+        applicationId "io.noties.lifebus.sample"
         minSdkVersion config['min-sdk']
         targetSdkVersion config['target-sdk']
         versionCode 1

@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.4.0'
     }
 }
 
@@ -28,8 +28,8 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion '4.10.2'
+wrapper {
+    gradleVersion '5.1.1'
     distributionType 'all'
 }
 
@@ -41,11 +41,11 @@ ext {
 
     config = [
             'min-sdk'    : 16,
-            'target-sdk' : 27,
+            'target-sdk' : 28,
             'build-tools': '28.0.3'
     ]
 
-    final def supportVersion = '27.1.0'
+    final def supportVersion = '28.0.0'
     final def lifecycleVersion = '1.1.1'
 
     deps = [
@@ -54,7 +54,7 @@ ext {
             'support-app-compat' : "com.android.support:appcompat-v7:$supportVersion",
             'lifecycle-ext'      : "android.arch.lifecycle:extensions:$lifecycleVersion",
             'lifecycle-java8'    : "android.arch.lifecycle:common-java8:$lifecycleVersion",
-            'debug'              : 'ru.noties:debug:4.0.0@jar'
+            'debug'              : 'io.noties:debug:5.0.0@jar'
     ]
 
     testDeps = [

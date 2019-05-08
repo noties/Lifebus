@@ -2,8 +2,8 @@
 
 Utility to trigger action on Android lifecycle events. Contains implementation based on [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) and own implementation with extended set of events for Activity, Fragment and View.
 
-[![lifebus](https://img.shields.io/maven-central/v/ru.noties/lifebus.svg?label=lifebus)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22lifebus%22)
-[![lifebus-arch](https://img.shields.io/maven-central/v/ru.noties/lifebus-arch.svg?label=lifebus-arch)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22lifebus-arch%22)
+[![lifebus](https://img.shields.io/maven-central/v/io.noties/lifebus.svg?label=lifebus)](http://search.maven.org/#search|ga|1|g%3A%22io.noties%22%20AND%20a%3A%22lifebus%22)
+[![lifebus-arch](https://img.shields.io/maven-central/v/io.noties/lifebus-arch.svg?label=lifebus-arch)](http://search.maven.org/#search|ga|1|g%3A%22io.noties%22%20AND%20a%3A%22lifebus-arch%22)
 
 ---
 
@@ -37,7 +37,7 @@ The idea behind this: most lifecycle events have their counterparts. `onCreate/o
 ## Arch
 
 ```groovy
-implementation "ru.noties:lifebus-arch:${latest}"
+implementation "io.noties:lifebus-arch:${latest}"
 ```
 
 **NB** this artifact relies on `android.arch.lifecycle:common-java8:1.1.1` in order to receive all lifecycle events without using annotation processor. I have tested it on a project with `JavaVersion.VERSION_1_7` and it compiled and worked. But I cannot guarantee that this will be true with the future releases of architecture components.
@@ -55,7 +55,7 @@ lifebus.on(Lifecycle.Event.ON_DESTROY, () -> {});
 ## Extended set of events
 
 ```groovy
-implementation "ru.noties:lifebus:${latest}"
+implementation "io.noties:lifebus:${latest}"
 ```
 
 Activity via (`ActivityEvent`):
@@ -96,7 +96,7 @@ Please note that after ActivityLifebus receives a `DESTROY` event it will automa
 ## License
 
 ```
-  Copyright 2018 Dimitry Ivanov (mail@dimitryivanov.ru)
+  Copyright 2018, 2019 Dimitry Ivanov (legal@noties.io)
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
