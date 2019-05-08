@@ -1,6 +1,17 @@
 # Changelog
 
-## v1.0.2
+## v1.2.0
+* maven artifact migration `ru.noties` -&gt; `io.noties`
+* package name migration `ru.noties` -&gt; `io.noties`
+
+### v1.1.0
+* `ActivityEvent.SAVE_INSTANCE_STATE` event added
+* `FragmentEvent.SAVE_INSTANCE_STATE` event added
+* renamed `FragmentEvent.CREATE_VIEW` -&gt; `FragmentEvent.VIEW_CREATED`
+* renamed `FragmentEvent.DESTROY_VIEW` -&gt; `FragmentEvent.VIEW_DESTROYED`
+* removed `ViewEvent` and `ViewLifebus`
+
+### v1.0.2
 * Add `view` functionality
   * `ViewEvent` (ATTACH, DETACH)
   * `ViewLifebus`

@@ -1,6 +1,8 @@
 # Lifebus
 
-Utility to trigger action on Android lifecycle events. Contains implementation based on [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) and own implementation with extended set of events for Activity, Fragment and View.
+Utility to trigger one-shot action on Android lifecycle events (no stream). Contains implementation 
+based on [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) 
+and own implementation with an extended set of events for Activity and Fragment.
 
 [![lifebus](https://img.shields.io/maven-central/v/io.noties/lifebus.svg?label=lifebus)](http://search.maven.org/#search|ga|1|g%3A%22io.noties%22%20AND%20a%3A%22lifebus%22)
 [![lifebus-arch](https://img.shields.io/maven-central/v/io.noties/lifebus-arch.svg?label=lifebus-arch)](http://search.maven.org/#search|ga|1|g%3A%22io.noties%22%20AND%20a%3A%22lifebus-arch%22)
