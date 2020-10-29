@@ -20,7 +20,7 @@ allprojects {
     version = VERSION_NAME
 
     tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:none', '-quiet')
+        enabled = false
     }
 }
 
