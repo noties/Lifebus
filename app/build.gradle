@@ -25,7 +25,7 @@ dependencies {
     implementation project(':lifebus-arch')
 
     deps.with {
-        implementation it['support-app-compat']
+        implementation it['x-app-compat']
         implementation it['debug']
     }
 }

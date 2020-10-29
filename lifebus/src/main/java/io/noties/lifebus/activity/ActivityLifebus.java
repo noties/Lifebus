@@ -3,11 +3,12 @@ package io.noties.lifebus.activity;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 
-import io.noties.lifebus.fragment.FragmentLifebus;
+import androidx.annotation.NonNull;
+
 import io.noties.lifebus.BaseLifebus;
 import io.noties.lifebus.Lifebus;
+import io.noties.lifebus.fragment.FragmentLifebus;
 
 /**
  * Factory to create a {@link Lifebus} instance that listens for {@link ActivityEvent}
@@ -71,37 +72,37 @@ public abstract class ActivityLifebus extends BaseLifebus<Activity, ActivityEven
         private class ActivityLifecycleCallbacksImpl implements Application.ActivityLifecycleCallbacks {
 
             @Override
-            public void onActivityCreated(Activity a, Bundle savedInstanceState) {
+            public void onActivityCreated(@NonNull Activity a, Bundle savedInstanceState) {
                 triggerEventNotification(a, ActivityEvent.CREATE);
             }
 
             @Override
-            public void onActivityStarted(Activity a) {
+            public void onActivityStarted(@NonNull Activity a) {
                 triggerEventNotification(a, ActivityEvent.START);
             }
 
             @Override
-            public void onActivityResumed(Activity a) {
+            public void onActivityResumed(@NonNull Activity a) {
                 triggerEventNotification(a, ActivityEvent.RESUME);
             }
 
             @Override
-            public void onActivityPaused(Activity a) {
+            public void onActivityPaused(@NonNull Activity a) {
                 triggerEventNotification(a, ActivityEvent.PAUSE);
             }
 
             @Override
-            public void onActivityStopped(Activity a) {
+            public void onActivityStopped(@NonNull Activity a) {
                 triggerEventNotification(a, ActivityEvent.STOP);
             }
 
             @Override
-            public void onActivitySaveInstanceState(Activity a, Bundle outState) {
+            public void onActivitySaveInstanceState(@NonNull Activity a, @NonNull Bundle outState) {
                 triggerEventNotification(a, ActivityEvent.SAVE_INSTANCE_STATE);
             }
 
             @Override
-            public void onActivityDestroyed(Activity a) {
+            public void onActivityDestroyed(@NonNull Activity a) {
                 if (triggerEventNotification(a, ActivityEvent.DESTROY)) {
                     // unregister
                     a.getApplication().unregisterActivityLifecycleCallbacks(this);

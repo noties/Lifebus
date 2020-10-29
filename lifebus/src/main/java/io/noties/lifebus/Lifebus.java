@@ -1,6 +1,6 @@
 package io.noties.lifebus;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import io.noties.lifebus.activity.ActivityLifebus;
 import io.noties.lifebus.fragment.FragmentLifebus;

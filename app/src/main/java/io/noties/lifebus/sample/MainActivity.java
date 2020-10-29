@@ -1,11 +1,12 @@
 package io.noties.lifebus.sample;
 
-import android.arch.lifecycle.Lifecycle;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 
 import io.noties.debug.Debug;
 import io.noties.lifebus.Lifebus;

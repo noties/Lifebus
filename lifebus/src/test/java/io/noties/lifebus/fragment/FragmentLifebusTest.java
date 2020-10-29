@@ -1,8 +1,8 @@
 package io.noties.lifebus.fragment;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +11,7 @@ import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -28,11 +29,23 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class FragmentLifebusTest {
+
+    private static final Field FRAGMENT_MANAGER;
+
+    static {
+        final Field f;
+        try {
+            f = Fragment.class.getDeclaredField("mFragmentManager");
+            f.setAccessible(true);
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        }
+        FRAGMENT_MANAGER = f;
+    }
 
     private Fragment fragment;
     private FragmentManager manager;
@@ -42,7 +55,15 @@ public class FragmentLifebusTest {
     public void beforer() {
         fragment = mock(Fragment.class);
         manager = mock(FragmentManager.class);
-        when(fragment.getFragmentManager()).thenReturn(manager);
+
+        // great, now this method is final :'(
+//        when(fragment.getFragmentManager()).thenReturn(manager);
+        try {
+            FRAGMENT_MANAGER.set(fragment, manager);
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        }
+
         lifebus = FragmentLifebus.create(fragment);
     }
 

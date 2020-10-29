@@ -2,7 +2,8 @@ package io.noties.lifebus.activity;
 
 import android.app.Activity;
 import android.app.Application;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import org.junit.Before;
 import org.junit.Test;

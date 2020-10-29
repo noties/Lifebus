@@ -17,10 +17,10 @@ dependencies {
 
     deps.with {
 
-        api it['support-annotations']
+        api it['x-annotations']
 
         // do not add dependency, compile only
-        compileOnly it['support-fragments']
+        compileOnly it['x-fragments']
     }
 
     testDeps.with {
@@ -30,7 +30,7 @@ dependencies {
     }
 
     // we must have fragments at classpath for tests
-    testImplementation deps['support-fragments']
+    testImplementation deps['x-fragments']
 }
 
 if (releaseToMaven()) {

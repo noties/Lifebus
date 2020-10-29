@@ -1,7 +1,8 @@
 package io.noties.lifebus.sample.custom;
 
-import android.support.annotation.NonNull;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 import io.noties.lifebus.BaseLifebus;
 import io.noties.lifebus.Lifebus;

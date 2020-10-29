@@ -2,10 +2,11 @@ package io.noties.lifebus.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import io.noties.lifebus.BaseLifebus;
 import io.noties.lifebus.Lifebus;
@@ -69,57 +70,57 @@ public abstract class FragmentLifebus extends BaseLifebus<Fragment, FragmentEven
         private class FragmentLifecycleCallbacksImpl extends FragmentManager.FragmentLifecycleCallbacks {
 
             @Override
-            public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
+            public void onFragmentAttached(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull Context context) {
                 triggerEventNotification(f, FragmentEvent.ATTACH);
             }
 
             @Override
-            public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
+            public void onFragmentCreated(@NonNull FragmentManager fm, @NonNull Fragment f, Bundle savedInstanceState) {
                 triggerEventNotification(f, FragmentEvent.CREATE);
             }
 
             @Override
-            public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
+            public void onFragmentViewCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull View v, Bundle savedInstanceState) {
                 triggerEventNotification(f, FragmentEvent.VIEW_CREATED);
             }
 
             @Override
-            public void onFragmentStarted(FragmentManager fm, Fragment f) {
+            public void onFragmentStarted(@NonNull FragmentManager fm, @NonNull Fragment f) {
                 triggerEventNotification(f, FragmentEvent.START);
             }
 
             @Override
-            public void onFragmentResumed(FragmentManager fm, Fragment f) {
+            public void onFragmentResumed(@NonNull FragmentManager fm, @NonNull Fragment f) {
                 triggerEventNotification(f, FragmentEvent.RESUME);
             }
 
             @Override
-            public void onFragmentPaused(FragmentManager fm, Fragment f) {
+            public void onFragmentPaused(@NonNull FragmentManager fm, @NonNull Fragment f) {
                 triggerEventNotification(f, FragmentEvent.PAUSE);
             }
 
             @Override
-            public void onFragmentStopped(FragmentManager fm, Fragment f) {
+            public void onFragmentStopped(@NonNull FragmentManager fm, @NonNull Fragment f) {
                 triggerEventNotification(f, FragmentEvent.STOP);
             }
 
             @Override
-            public void onFragmentSaveInstanceState(FragmentManager fm, Fragment f, Bundle outState) {
+            public void onFragmentSaveInstanceState(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull Bundle outState) {
                 triggerEventNotification(f, FragmentEvent.SAVE_INSTANCE_STATE);
             }
 
             @Override
-            public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
+            public void onFragmentViewDestroyed(@NonNull FragmentManager fm, @NonNull Fragment f) {
                 triggerEventNotification(f, FragmentEvent.VIEW_DESTROYED);
             }
 
             @Override
-            public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
+            public void onFragmentDestroyed(@NonNull FragmentManager fm, @NonNull Fragment f) {
                 triggerEventNotification(f, FragmentEvent.DESTROY);
             }
 
             @Override
-            public void onFragmentDetached(FragmentManager fm, Fragment f) {
+            public void onFragmentDetached(@NonNull FragmentManager fm, @NonNull Fragment f) {
                 if (triggerEventNotification(f, FragmentEvent.DETACH)) {
                     fm.unregisterFragmentLifecycleCallbacks(this);
                 }

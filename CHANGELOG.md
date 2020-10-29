@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.2.1
+use AndroidX artifacts
+
 ## v1.2.0
 * maven artifact migration `ru.noties` -&gt; `io.noties`
 * package name migration `ru.noties` -&gt; `io.noties`
